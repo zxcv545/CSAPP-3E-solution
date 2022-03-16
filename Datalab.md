@@ -61,4 +61,23 @@
         int negate(int x) {
         return ~x+1;
         }
-还记得书上的内容吗？ `A+~A=-1`
+还记得书上的内容吗？ `A+~A=-1`,那么这题就能很快解决了。
+## 1.6
+        /* 
+         * isAsciiDigit - return 1 if 0x30 <= x <= 0x39 (ASCII codes for characters '0' to '9')
+         *   Example: isAsciiDigit(0x35) = 1.
+         *            isAsciiDigit(0x3a) = 0.
+         *            isAsciiDigit(0x05) = 0.
+         *   Legal ops: ! ~ & ^ | + << >>
+         *   Max ops: 15
+         *   Rating: 3
+         */
+        int isAsciiDigit(int x) {     *there are some of mistakes*
+            int a=!(x >> 4 ^0x3);
+            int b=x&0xF;
+            int c=~0xA+1;
+            int e=0x80<<24;
+            int d=!!((b+c)&(e));
+          return  a&d ;
+        }
+第一个Rating:3的，让我想了一段时间，我一开始想的是利用加减操作来解决这个问题，可是很快就发现漏洞了`因为会有溢出`当然，如果想办法解决溢出所带来的不一样的情况也可以
