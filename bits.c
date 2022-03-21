@@ -166,7 +166,7 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  return !(x+x+2);
+  return !(x^(~(0x1<<31)));
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -177,8 +177,10 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-    int y=(0xAA<<24)+(0xAA<<16)+(0xAA<<8)+0xAA;
-     return !(~(((y&x)<<1)+y+1));
+    int a=0xAA<<8;
+    int c=a|0xAA;
+    int d=c<<16|c;
+  return !((x&d)^(d));
 }
 /* 
  * negate - return -x 
@@ -228,7 +230,13 @@ int conditional(int x, int y, int z) {
  */
 int isLessOrEqual(int x, int y) {
     
-  return ((y+(~x+1))>>31)+1;
+  int a=x>>31&0x1;
+  int b=y>>31&0x1;
+  int c1=(a&~b); 
+  int c2=(~a&b);
+  int e=y+(~x+1); 
+  int flag=e>>31;
+  return c1 |(!c2&!flag);
   }
 //4
 /* 
@@ -256,26 +264,26 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-    int a,b,c,e,f,h,j,d;
+    int a=0,b=0,c=0,e=0,f=0,h=0,j=0,d=0;
     a=x>>31&0x1;
     b=(~a+1)^x;      
     d=(0xff<<24)+(0xff<<16);
     c=!!(b&d);
-    c<<4;
-    b>>c;
-    e=!!(b&0xff);
-    e<<3;
-    b>>e;
+    c<<=4;
+    b>>=c;
+    e=!!(b&0xff00);
+    e<<=3;
+    b>>=e;
     f=!!(b&0xf0);
-    f<<2;
-    b>>f;
+    f<<=2;
+    b>>=f;
     h=!!(b&0xc);
-    h<<1;
-    b>>h;
+    h<<=1;
+    b>>=h;
     j=!!(b&0x3);
-    j<<0;
-    b>>j;
-  return c+e+f+h+j+1;
+    j<<=0;
+    b>>=j;
+  return c+e+f+h+j+b+1;
 }
 //float
 /* 
@@ -291,14 +299,14 @@ int howManyBits(int x) {
  */
 unsigned floatScale2(unsigned uf) {
 unsigned a;
-a=(uf>>23)&0xff;                                                                                                                                                                                                                     
+a=(uf>>23)&0xff; 
    if(a){
-   if(~a)
-   uf+=0x1<<23;
+   if(~(a|(~0x0<<8)))
+   {uf+=0x1<<23;}
    }
    else
-   uf+=uf&(~(0x1<<31));  
-  return uf;
+   {uf+=uf&(~(0x1<<31));}
+   return uf;
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
@@ -313,7 +321,7 @@ a=(uf>>23)&0xff;
  *   Rating: 4
  */
 int floatFloat2Int(unsigned uf) {
-   unsigned b,sign,e,E;
+   int b,sign,e,E;
    sign=uf>>31&0x1;
    b=(uf&0x007fffff)|(0x1<<23);
    e=(uf>>23)&0xff;
@@ -372,5 +380,5 @@ unsigned floatPower2(int x) {
     else
     a=(x+127)<<23;
     }
-    return 2;
+    return a;
 }
