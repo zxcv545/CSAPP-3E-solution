@@ -10,4 +10,4 @@
 **所有文件都可以在配置好环境的linux下运行**
 
 ## 1.[Datalab](https://github.com/zxcv545/-csapp-computer-systems-a-programmer-s-perspective-/blob/main/Datalab-handout/Datalab.md)
-## 2.[Bomblab]
+## 2.[Bomblab](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/README.md)
