@@ -42,7 +42,7 @@
 
 函数`string_not_equal`内部的情况为：
 
-![](/https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2020-21-35.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2020-21-35.png)
 
 先保存了三个寄存器的值，这三个寄存器是被调用者保存寄存器，然后将两个用来传递参数的寄存器的值分别赋给了`%rbx`和`%rbp`然后调用`string_length`函数，来看看`string_length`函数吧：
 
