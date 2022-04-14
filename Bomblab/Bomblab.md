@@ -4,11 +4,11 @@
 
 在bomb文件夹目录下，有三个文件`bomb` `bomb.c` `README` 需要先将**bomb** 文件反汇编成`.s` 文件，生成`bomb.s`文件。 利用`objdump -d bomb > bomb.s`即可生成`bomb.s`文件。
 
-![main函数](/home/zxcv/Pictures/Screenshot from 2022-04-14 18-36-00.png)
+![main函数](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2018-36-00.png)
 
-![main的汇编代码-1](/home/zxcv/Pictures/Screenshot from 2022-04-14 19-51-37.png)
+![main的汇编代码-1](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2019-51-37.png)
 
-![main的汇编代码-2](/home/zxcv/Pictures/Screenshot from 2022-04-14 19-52-20.png)
+![main的汇编代码-2](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2019-52-20.png)
 
 最开始的`if-else`语句是选择字符串的输入方式，你可以选择直接在命令行中给出，或者将字符串放在一个文件里，后者的好处是，你不用重复输入字符串。
 
@@ -16,13 +16,13 @@
 
 `initialize_bomb();`这个函数是初始化炸弹的，具体细节未给出，此函数对应0x400e19处的call指令，看此函数的汇编代码发现也是调用了库函数。
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 19-53-03.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2019-53-03.png)
 
 所以此处也跳过，这些所做的其实都不影响我们分析，Dr. Evil也并不想让我们知道是怎么初始化的。
 
 那么我们就来到了`input = read_line();`，根据注释也能猜测出来，这个应该是从刚刚选择的输入方式中获得一个字符串，并不需要知道这个函数的细节，我们看下在0x400e53处的汇编代码，根据约定`%rax`的值作为返回值来传递，这里将`%rax`的值传递给`%rdi`，`%rdi`中的值又作为参数传递给接下来要调用的函数，接下来要调用的函数就是`phase_1`,先来看看`phase_1`的汇编代码
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 19-53-38.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2019-53-38.png)
 
 用`gdb bomb -tui`调试bomb，在进入gdb后输入`layout asm`会在上方显示汇编代码
 
@@ -30,13 +30,13 @@
 
 在main函数中即将要调用`phase_1`时设置断点`break *0x400e3a`,然后就可以用`run`命令来运行代码，这个时候出现了要让你输入字符串的提示：
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 20-17-04.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2020-17-04.png)
 
 刚开始并不知道函数内部是什么，所以随便输入一串字符测试一下，我只输入了一个字符。
 
 然后开始一步一步调试代码
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 20-19-42.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2020-19-42.png)
 
 这是即将进入`string_not_equal`前的用来传递参数的两个寄存器的值.
 
