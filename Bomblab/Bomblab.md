@@ -42,7 +42,7 @@
 
 函数`string_not_equal`内部的情况为：
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 20-21-35.png)
+![](/https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2020-21-35.png)
 
 先保存了三个寄存器的值，这三个寄存器是被调用者保存寄存器，然后将两个用来传递参数的寄存器的值分别赋给了`%rbx`和`%rbp`然后调用`string_length`函数，来看看`string_length`函数吧：
 
@@ -50,7 +50,7 @@
 
 很短的一段汇编代码，大概意思就是以传递过来的参数`(%rdi)`内的值为初始地址，然后检查对应地址内的字节是否为零`(0x00)`来作为判断字符的长度，如果不是零，长度加一，然后到下一个字节，是零就返回一个长度的值，直到遇到零函数终止，我刚刚就输入一个字符，所以执行完后返回到`string_length`函数时检查一下`%rax`的值：
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 20-34-22.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2020-34-22.png)
 
 果然是`0x01`。
 
@@ -58,7 +58,7 @@
 
 当函数再次返回时，检查`%rax`的值：
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 20-38-07.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2020-38-07.png)
 
 从这里可以知道，我们要输入的字符的长度为`52`，那么然后呢？，通过继续分析函数`string_length`可以知道
 
@@ -68,10 +68,10 @@
 
 所以我们要输入什么呢？看起来答案在内存的某个地方，在那呢？还记得刚刚比对字符的函数吗。我得直到字符在那才能比对是吧，这样就容易知道了，应该就在刚刚显示的那两个传递参数的寄存器里，通过分析可以知道，是在`%rsi`寄存器里，值为：`402400`,那么我们用gdb来看看这段内存里存的字符是什么:
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 21-11-34.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2021-11-34.png)
 
 前52个字符是`Border relations with Canada have never been better.`,所以这应该是答案，让我们测试一下：
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 21-14-01.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2021-14-01.png)
 
 果然没错，这样，phase1解决了！
