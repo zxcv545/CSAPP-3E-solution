@@ -26,7 +26,7 @@
 
 用`gdb bomb -tui`调试bomb，在进入gdb后输入`layout asm`会在上方显示汇编代码
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 20-11-22.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2020-11-22.png)
 
 在main函数中即将要调用`phase_1`时设置断点`break *0x400e3a`,然后就可以用`run`命令来运行代码，这个时候出现了要让你输入字符串的提示：
 
@@ -46,7 +46,7 @@
 
 先保存了三个寄存器的值，这三个寄存器是被调用者保存寄存器，然后将两个用来传递参数的寄存器的值分别赋给了`%rbx`和`%rbp`然后调用`string_length`函数，来看看`string_length`函数吧：
 
-![](/home/zxcv/Pictures/Screenshot from 2022-04-14 20-26-55.png)
+![](https://github.com/zxcv545/CSAPP-3E-solution/blob/main/Bomblab/Screenshot%20from%202022-04-14%2020-26-55.png)
 
 很短的一段汇编代码，大概意思就是以传递过来的参数`(%rdi)`内的值为初始地址，然后检查对应地址内的字节是否为零`(0x00)`来作为判断字符的长度，如果不是零，长度加一，然后到下一个字节，是零就返回一个长度的值，直到遇到零函数终止，我刚刚就输入一个字符，所以执行完后返回到`string_length`函数时检查一下`%rax`的值：
 
